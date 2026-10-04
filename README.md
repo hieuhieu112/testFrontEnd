@@ -1,50 +1,40 @@
-# React + TypeScript + Vite
+# Frontend admin
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This project uses React, TypeScript, and Vite.
 
-Currently, two official plugins are available:
+## Run locally
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Install dependencies with `npm ci`, then set the backend URL in the shell that starts the frontend:
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+```powershell
+$env:API_BASE_URL = 'http://localhost:8080'
+npm run dev
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+On macOS or Linux:
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
+```sh
+API_BASE_URL=http://localhost:8080 npm run dev
 ```
+
+The URL must start with `http://` or `https://`. Include a path prefix if the backend uses one. API requests append `/api/...` to this URL.
+
+## Deploy
+
+```sh
+npm ci
+npm run build
+API_BASE_URL=https://api.example.com PORT=4173 npm start
+```
+
+In PowerShell, after building:
+
+```powershell
+$env:API_BASE_URL = 'https://api.example.com'
+$env:PORT = '4173'
+npm start
+```
+
+Set `API_BASE_URL` as an environment variable on the process running `npm start`. `PORT` is optional and defaults to `4173`. The same `dist` build can be used with different backend URLs by restarting the server with a different `API_BASE_URL`. No `.env` file or rebuild is needed. `npm run preview` also runs this server.
+
+The browser loads `/config.js` from the frontend server before loading the app. If deploying `dist` to another static host instead of using `npm start`, that host must serve `/config.js` with `window.__APP_CONFIG__ = { apiBaseUrl: "https://api.example.com" };` before the app loads. The backend must allow the frontend origin through CORS when they are on different origins.

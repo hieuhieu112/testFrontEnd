@@ -28,7 +28,7 @@ export default function Products() {
       setLoading(true);
       const data = await productApi.getAll();
       setProducts(data);
-    } catch (err) {
+    } catch {
       setError('Failed to fetch products.');
     } finally {
       setLoading(false);
@@ -58,7 +58,7 @@ export default function Products() {
       setIsModalOpen(false);
       fetchProducts();
       setTimeout(() => setSuccessMsg(''), 3000);
-    } catch (err) {
+    } catch {
       setError('Failed to save product. Please check the information and try again.');
     }
   };
@@ -71,7 +71,7 @@ export default function Products() {
       setIsDeleteModalOpen(false);
       fetchProducts();
       setTimeout(() => setSuccessMsg(''), 3000);
-    } catch (err) {
+    } catch {
       setError('Failed to delete product.');
     }
   };

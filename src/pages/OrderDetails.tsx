@@ -38,7 +38,7 @@ export default function OrderDetails() {
       setOrderDetails(detailsData);
       setOrders(ordersData);
       setProducts(productsData);
-    } catch (err) {
+    } catch {
       setError('Failed to fetch data.');
     } finally {
       setLoading(false);
@@ -76,7 +76,7 @@ export default function OrderDetails() {
       setIsModalOpen(false);
       fetchData();
       setTimeout(() => setSuccessMsg(''), 3000);
-    } catch (err) {
+    } catch {
       setError('Failed to save order detail. Please check the information and try again.');
     }
   };
@@ -89,7 +89,7 @@ export default function OrderDetails() {
       setIsDeleteModalOpen(false);
       fetchData();
       setTimeout(() => setSuccessMsg(''), 3000);
-    } catch (err) {
+    } catch {
       setError('Failed to delete order detail.');
     }
   };
