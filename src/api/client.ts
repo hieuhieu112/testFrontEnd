@@ -3,7 +3,7 @@ import axios from 'axios';
 const apiBaseUrl = window.__APP_CONFIG__?.apiBaseUrl;
 
 if (!apiBaseUrl) {
-  throw new Error('API configuration missing. Set API_BASE_URL when starting the frontend.');
+  throw new Error('API configuration missing. Set API_BASE_URL or VITE_API_BASE_URL when starting the frontend.');
 }
 
 const apiClient = axios.create({

@@ -11,6 +11,8 @@ $env:API_BASE_URL = 'http://localhost:8080'
 npm run dev
 ```
 
+You can use `$env:VITE_API_BASE_URL` instead. For `npm run dev`, Vite also reads `VITE_API_BASE_URL` from `.env`.
+
 On macOS or Linux:
 
 ```sh
@@ -35,6 +37,6 @@ $env:PORT = '4173'
 npm start
 ```
 
-Set `API_BASE_URL` as an environment variable on the process running `npm start`. `PORT` is optional and defaults to `4173`. The same `dist` build can be used with different backend URLs by restarting the server with a different `API_BASE_URL`. No `.env` file or rebuild is needed. `npm run preview` also runs this server.
+Set `API_BASE_URL` or `VITE_API_BASE_URL` as an environment variable on the process running `npm start`. If both are set, `API_BASE_URL` takes precedence. `PORT` is optional and defaults to `4173`. The same `dist` build can be used with different backend URLs by restarting the server with a different URL setting. `npm start` reads process environment variables, not `.env`; no rebuild is needed. `npm run preview` also runs this server.
 
 The browser loads `/config.js` from the frontend server before loading the app. If deploying `dist` to another static host instead of using `npm start`, that host must serve `/config.js` with `window.__APP_CONFIG__ = { apiBaseUrl: "https://api.example.com" };` before the app loads. The backend must allow the frontend origin through CORS when they are on different origins.
