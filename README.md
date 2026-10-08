@@ -1,6 +1,6 @@
 # Frontend admin
 
-This project uses React, TypeScript, and Vite.
+This project uses React, TypeScript, and Vite. The browser reads its API URL from `/config.js` when the app starts. The URL is supplied by the frontend server at runtime, so one build can be deployed with different API URLs.
 
 ## Run locally
 
@@ -37,6 +37,19 @@ $env:PORT = '4173'
 npm start
 ```
 
-Set `API_BASE_URL` or `VITE_API_BASE_URL` as an environment variable on the process running `npm start`. If both are set, `API_BASE_URL` takes precedence. `PORT` is optional and defaults to `4173`. The same `dist` build can be used with different backend URLs by restarting the server with a different URL setting. `npm start` reads process environment variables, not `.env`; no rebuild is needed. `npm run preview` also runs this server.
+Set `API_BASE_URL` or `VITE_API_BASE_URL` as an environment variable on the process running `npm start`. If both are set, `API_BASE_URL` takes precedence. `PORT` is optional and defaults to `4173`. Change the URL by restarting the server with a different environment value; no rebuild is needed. `npm start` reads process environment variables, not `.env`; `npm run preview` also runs this server.
 
-The browser loads `/config.js` from the frontend server before loading the app. If deploying `dist` to another static host instead of using `npm start`, that host must serve `/config.js` with `window.__APP_CONFIG__ = { apiBaseUrl: "https://api.example.com" };` before the app loads. The backend must allow the frontend origin through CORS when they are on different origins.
+The browser loads `/config.js` before loading the app. `npm run build` does not write a URL into `dist`; the runtime server generates `/config.js` from its environment. A static host needs to generate or serve that file when it starts. The backend must allow the frontend origin through CORS when they are on different origins.
+
+## Docker
+
+Build `dist` first, then build the image. Pass the API URL when starting the container:
+
+```sh
+npm ci
+npm run build
+docker build -t frontend-admin .
+docker run --rm -p 8080:80 -e API_BASE_URL=https://api.example.com frontend-admin
+```
+
+The same image can run with another `API_BASE_URL` without rebuilding it. The container serves port 80.
